@@ -1,0 +1,47 @@
+server:
+  host: "0.0.0.0"
+  port: 3128
+  timeout: 20  # таймаут для запросов в секундах
+  buffer_size: 4096  # размер буфера для чтения/записи данных
+
+logging:
+  path: "./logs/proxy.log"
+  level: "INFO"
+  rotate_size_mb: 5
+  rotate_backups: 3
+
+log_fields:
+  remote_ip: true
+  method: true
+  url: true
+  status_code: true
+  duration_ms: true
+  headers: false
+  body: false
+  response_headers: false
+  response_body: false
+
+limits:
+  max_body_size_kb: 2048  # максимум 2MB
+
+access_control:
+  default_action: "deny"
+  rules:
+    - name: "local"
+      networks: ["127.0.0.1"]
+      action: "deny"
+      whitelist_file: "./rules/lan_whitelist.txt"
+    - name: "restricted_lan"
+      networks: ["192.168.95.0/24"]
+      action: "deny"
+      whitelist_file: "./rules/lan_whitelist.txt"
+    - name: "wifi_guests"
+      networks: ["10.0.0.0/8"]
+      action: "allow"
+      blacklist_file: "./rules/guests_blacklist.txt"
+
+special_hosts:
+  - host: "172.16.10.30"
+    description: "Внутренний сервер с принудительным закрытием соединения"
+    force_close: true
+    direct_connection: true
