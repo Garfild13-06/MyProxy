@@ -28,15 +28,15 @@ access_control:
   default_action: "deny"
   rules:
     - name: "local"
-      networks: ["127.0.0.1"]
+      networks: [ "127.0.0.1" ]
       action: "deny"
       whitelist_file: "./rules/lan_whitelist.txt"
     - name: "restricted_lan"
-      networks: ["192.168.95.0/24"]
+      networks: [ "192.168.95.0/24" ]
       action: "deny"
       whitelist_file: "./rules/lan_whitelist.txt"
     - name: "wifi_guests"
-      networks: ["10.0.0.0/8"]
+      networks: [ "10.0.0.0/8" ]
       action: "allow"
       blacklist_file: "./rules/guests_blacklist.txt"
 
